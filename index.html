@@ -6,26 +6,8 @@
     <title>Minha Loja - Catálogo Online</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        html { scroll-behavior: smooth; }
-        .transition-all { transition: all 0.3s ease-in-out; }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.1), 0 8px 12px -6px rgba(0, 0, 0, 0.05);
-        }
-        @media (max-width: 768px) {
-            .category-scroll {
-                display: flex;
-                overflow-x: auto;
-                gap: 12px;
-                padding-bottom: 8px;
-                scrollbar-width: none;
-                -webkit-overflow-scrolling: touch;
-            }
-            .category-scroll::-webkit-scrollbar { display: none; }
-            .category-item { min-width: 90px; flex-shrink: 0; }
-        }
-    </style>
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans pb-24">
 
@@ -57,7 +39,7 @@
             </div>
         </div>
 
-        <!-- Categorias (Interativas via JS) -->
+        <!-- Categorias -->
         <section class="mb-8">
             <h2 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-slate-900 pl-2">Categorias</h2>
             <div id="categoryContainer" class="category-scroll grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 text-center">
@@ -183,7 +165,7 @@
 
     </main>
 
-    <!-- Barra de Carrinho Flutuante (Aparece quando o cliente seleciona itens) -->
+    <!-- Barra de Carrinho Flutuante -->
     <div id="cartBar" class="fixed bottom-0 left-0 right-0 bg-slate-900 text-white p-4 shadow-2xl transform translate-y-full transition-transform duration-300 z-50 flex items-center justify-between max-w-2xl mx-auto sm:rounded-t-2xl border-t border-slate-800">
         <div>
             <p class="text-xs text-gray-400">Itens selecionados:</p>
@@ -201,92 +183,7 @@
         <p class="text-xs mt-3 text-gray-500">Desenvolvido com GitHub Pages</p>
     </footer>
 
-    <!-- Lógica em JavaScript -->
-    <script>
-        let cart = [];
-
-        // Adicionar ao carrinho
-        function addCart(productName, price) {
-            cart.push({ name: productName, price: price });
-            updateCartUI();
-            
-            // Efeito visual sutil de alerta
-            const bar = document.getElementById('cartBar');
-            bar.classList.add('scale-102');
-            setTimeout(() => bar.classList.remove('scale-102'), 200);
-        }
-
-        // Atualizar barra flutuante
-        function updateCartUI() {
-            const bar = document.getElementById('cartBar');
-            const countText = document.getElementById('cartCount');
-            
-            if (cart.length > 0) {
-                bar.classList.remove('translate-y-full');
-                countText.innerText = `${cart.length} item(ns) adicionado(s)`;
-            } else {
-                bar.classList.add('translate-y-full');
-            }
-        }
-
-        // Finalizar pedido no WhatsApp
-        function checkoutWhatsApp() {
-            if (cart.length === 0) return;
-            
-            let message = "Olá! Gostaria de fazer o seguinte pedido:%0A%0A";
-            cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.name} - R$ ${item.price.toFixed(2)}%0A`;
-            });
-            message += "%0AAguardo instruções de pagamento e envio!";
-            
-            const phone = "5541988278625"; // Seu número de contato
-            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-        }
-
-        // Sistema de Pesquisa Instantânea
-        const searchInput = document.getElementById('searchInput');
-        const productItems = document.querySelectorAll('.product-item');
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase().trim();
-            productItems.forEach(item => {
-                const name = item.getAttribute('data-name');
-                if (name.includes(term)) {
-                    item.style.display = "flex";
-                } else {
-                    item.style.display = "none";
-                }
-            });
-        });
-
-        // Sistema de Filtro por Categoria
-        const categoryButtons = document.querySelectorAll('#categoryContainer .category-item');
-
-        categoryButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove destaque de todos
-                categoryButtons.forEach(b => {
-                    b.classList.remove('bg-slate-900', 'text-white', 'border-slate-900');
-                    b.classList.add('bg-white', 'text-slate-800', 'border-gray-100');
-                });
-                
-                // Destaca o clicado
-                btn.classList.remove('bg-white', 'text-slate-800', 'border-gray-100');
-                btn.classList.add('bg-slate-900', 'text-white', 'border-slate-900');
-
-                const selectedCategory = btn.getAttribute('data-category');
-
-                productItems.forEach(item => {
-                    const category = item.getAttribute('data-category');
-                    if (selectedCategory === 'todos' || category === selectedCategory) {
-                        item.style.display = "flex";
-                    } else {
-                        item.style.display = "none";
-                    }
-                });
-            });
-        });
-    </script>
-
+    <!-- Link para o arquivo JS externo -->
+    <script src="script.js"></script>
 </body>
 </html>
